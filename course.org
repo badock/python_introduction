@@ -37,6 +37,7 @@
   ndkeywordstyle=\color{red},
   commentstyle=\color{dkred},
   stringstyle=\color{dkgreen},
+  showstringspaces=false
 }
 
 \makeatletter
@@ -210,9 +211,9 @@ for key in di:
 which results in:
 
 #+results: for2
-: dehors
-: beau
-: il fait
+: boa
+: cobra
+: python
 
 * Functions
 :PROPERTIES:
@@ -297,42 +298,47 @@ which results in:
 :END:
 
 ** classes 
- - 
 
-#+name: classes
+#+name: classes1
 #+begin_src python
 # Defining a new Class
 class Person(object):
- """ Simple Person class """
+   """ Simple Person class """
+   counter = 0  # Class attribute
 
- counter = 0  # Class attribute
+   def __init__(self, name, age=0):
+      """ This method is called when this class is instantiated """
+      # name : required argument
+      self.name = name  # Instance attribute
+      self.age  = age   # An other instance attribute
 
- def __init__(self, name):
-  """ This method is called when this class is instantiated """
-  # name : required argument
-  self.name = name  # Instance attribute
-  self.age  = 0   # An other instance attribute
+   def say_hello(self):
+      return "Hello I am : " + self.name
+#+end_src
 
-  def say_hello(self):
-    return "Hello I am : " + self.name
 
-# Object instantiation
-x = Person()
+** Example
+
+#+name: classes2
+#+begin_src python :results output :exports both
+<<classes1>>
+x = Person("toto") # Object instantiation
 
 # Attributes R/W
-x.name = "toto"
+x.name = "toto2"
 x.age = 20
 
 print(x.name)
-
-x.say_hello()
-
+print(x.say_hello())
 #+end_src
-The result is :
-#+RESULTS: classes
 
+which results in:
 
-- Advanced classes
+#+RESULTS: classes2
+: toto2
+: Hello I am : toto2
+
+** Advanced classes
 #+name: aclasses
 #+begin_src python
 class Student(Person):
