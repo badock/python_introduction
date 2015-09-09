@@ -74,6 +74,9 @@ b = "ab" + "cd" + "ef"
 
 print(a)
 print(b)
+
+type(a)
+type(b)
 #+end_src
 
 which results in:
@@ -81,7 +84,8 @@ which results in:
 #+results: variable1
 : 2
 : abcdef
-
+: <type 'int'>
+: <type 'str'>
 ** Lists
 #+name: list1
 #+begin_src python :results output :exports both
@@ -289,8 +293,118 @@ which results in:
 : 2
 * Objects
 :PROPERTIES:
-:header-args:  :results output :exports both :noweb strip-export
+:header-args: :results output :exports both :noweb strip-export
 :END:
+
+** classes 
+ - 
+
+#+name: classes
+#+begin_src python
+# Defining a new Class
+class Person(object):
+ """ Simple Person class """
+
+ counter = 0  # Class attribute
+
+ def __init__(self, name):
+  """ This method is called when this class is instantiated """
+  # name : required argument
+  self.name = name  # Instance attribute
+  self.age  = 0   # An other instance attribute
+
+  def say_hello(self):
+    return "Hello I am : " + self.name
+
+# Object instantiation
+x = Person()
+
+# Attributes R/W
+x.name = "toto"
+x.age = 20
+
+print(x.name)
+
+x.say_hello()
+
+#+end_src
+The result is :
+#+RESULTS: classes
+
+
+- Advanced classes
+#+name: aclasses
+#+begin_src python
+class Student(Person):
+ """ Student class that herite from Person """
+
+ def __init__(self, sexe, school=None):
+  # sexe : required argument
+  # school : keyword argument (optional)
+
+  # Call to super constructor
+  super(Student, self).__init__()
+
+  self.sexe = sexe
+  self.school = school
+
+ def __str__(self):
+  """ return a string when str() is called on instance of this class 
+   (equivalent to toString method in java)
+  """
+
+  return "Name : " + self.name + " Age : " +\
+     str(self.age) +\  # explicit type cast int to str
+     " Sexe : " + self.sexe + " School : " + str(self.school) # cast due to None  
+
+toto = Student("M")
+titi = Student("F", school="EMN")
+
+print(toto)
+print(titi)
+
+
+#+end_src
+The result is :
+#+RESULTS: aclasses
+
+** Meta Programming
+ - 
+
+#+name: meta
+#+begin_src python
+
+x = Person()
+y = Person()
+
+# Objects and Class runtime inspection
+hasattr(Person, "counter")
+hasattr(Person, "name")
+hasattr(x, "counter")
+hasattr(x, "name")
+
+# Adding attributes at runtime
+setattr(x, "sexe", "M") # or : x.sexe = "M"
+
+print(x.sexe)
+# print(y.sexe) # this will trigger an AttributeError
+
+# Getting attributes
+getattr(x, "age") # or: x.age
+
+# Getting class information
+x.__class__
+
+# Overwriting methods at runtime
+print(toto.say_hello())
+
+Person.say_hello = lambda self: str(self.age)
+
+print(toto.say_hello())
+
+#+end_src
+The result is :
+#+RESULTS: meta
 
 * Errors
 :PROPERTIES:
