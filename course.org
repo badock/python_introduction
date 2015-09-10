@@ -76,8 +76,8 @@ b = "ab" + "cd" + "ef"
 print(a)
 print(b)
 
-type(a)
-type(b)
+print(type(a))
+print(type(b))
 #+end_src
 
 which results in:
@@ -87,6 +87,7 @@ which results in:
 : abcdef
 : <type 'int'>
 : <type 'str'>
+
 ** Lists
 #+name: list1
 #+begin_src python :results output :exports both
@@ -183,6 +184,7 @@ which results in:
 #+results: while1
 : initial value: 1
 : final value: 10
+
 ** For
 - Keyword for declaring an iterative loop is *for*.
 - *for* take a boolean expression as parameter.
@@ -292,6 +294,7 @@ print(foo(1))
 which results in:
 #+results: decorator1
 : 2
+
 * Objects
 :PROPERTIES:
 :header-args: :results output :exports both :noweb strip-export
@@ -315,6 +318,8 @@ class Person(object):
    def say_hello(self):
       return "Hello I am : " + self.name
 #+end_src
+
+#+RESULTS: classes1
 
 
 ** Example
@@ -341,38 +346,39 @@ which results in:
 ** Advanced classes
 #+name: aclasses
 #+begin_src python
-class Student(Person):
- """ Student class that herite from Person """
+  <<classes1>>
+  class Student(Person):
+   """ Student class that herite from Person """
 
- def __init__(self, sexe, school=None):
-  # sexe : required argument
-  # school : keyword argument (optional)
+   def __init__(self, sexe, school=None):
+    # sexe : required argument
+    # school : keyword argument (optional)
 
-  # Call to super constructor
-  super(Student, self).__init__()
+    # Call to super constructor
+    super(Student, self).__init__("jii")
 
-  self.sexe = sexe
-  self.school = school
+    self.sexe = sexe
+    self.school = school
 
- def __str__(self):
-  """ return a string when str() is called on instance of this class 
-   (equivalent to toString method in java)
-  """
+   def __str__(self):
+    """ return a string when str() is called on instance of this class
+     (equivalent to toString method in java)
+    """
 
-  return "Name : " + self.name + " Age : " +\
-     str(self.age) +\  # explicit type cast int to str
-     " Sexe : " + self.sexe + " School : " + str(self.school) # cast due to None  
+    return "Name : %s, Age : %s, Sexe : %s, School : %s "  %(self.name, self.age, self.sexe, self.school)
 
-toto = Student("M")
-titi = Student("F", school="EMN")
+  toto = Student("M")
+  titi = Student("F", school="EMN")
 
-print(toto)
-print(titi)
+  print(toto)
+  print(titi)
 
 
 #+end_src
-The result is :
+   The result is :
 #+RESULTS: aclasses
+: Name : jii, Age : 0, Sexe : M, School : None 
+: Name : jii, Age : 0, Sexe : F, School : EMN 
 
 ** Meta Programming
  - 
@@ -475,6 +481,7 @@ thread-2: 3
 thread-1: 4
 thread-2: 4
 #+end_example
+
 * Plotting
 
 ** Plotting with matplotlib
