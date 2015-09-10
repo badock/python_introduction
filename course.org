@@ -302,6 +302,9 @@ which results in:
 
 ** classes 
 
+- The keyword *class* is  used to define a new class.  Is recommended to inherit
+  from *object*.
+
 #+name: classes1
 #+begin_src python
 # Defining a new Class
@@ -311,7 +314,6 @@ class Person(object):
 
    def __init__(self, name, age=0):
       """ This method is called when this class is instantiated """
-      # name : required argument
       self.name = name  # Instance attribute
       self.age  = age   # An other instance attribute
 
@@ -327,7 +329,8 @@ class Person(object):
 #+name: classes2
 #+begin_src python :results output :exports both
 <<classes1>>
-x = Person("toto") # Object instantiation
+# Object instantiation
+x = Person("toto")
 
 # Attributes R/W
 x.name = "toto2"
@@ -344,18 +347,15 @@ which results in:
 : Hello I am : toto2
 
 ** Advanced classes
-#+name: aclasses
+#+name: aclasses1
 #+begin_src python
   <<classes1>>
   class Student(Person):
    """ Student class that herite from Person """
 
-   def __init__(self, sexe, school=None):
-    # sexe : required argument
-    # school : keyword argument (optional)
-
+   def __init__(self, name, sexe, school=None):
     # Call to super constructor
-    super(Student, self).__init__("jii")
+    super(Student, self).__init__(name)
 
     self.sexe = sexe
     self.school = school
@@ -364,64 +364,117 @@ which results in:
     """ return a string when str() is called on instance of this class
      (equivalent to toString method in java)
     """
-
-    return "Name : %s, Age : %s, Sexe : %s, School : %s "  %(self.name, self.age, self.sexe, self.school)
-
-  toto = Student("M")
-  titi = Student("F", school="EMN")
-
-  print(toto)
-  print(titi)
-
-
+    return ("Name : %s, Age : %s, Sexe : %s, School : %s "  
+              % (self.name, self.age, self.sexe, self.school))
 #+end_src
-   The result is :
-#+RESULTS: aclasses
+
+
+** Example
+
+#+name: aclasses2
+#+begin_src python :results output :exports both
+<<aclasses1>>
+toto = Student("toto", "M")
+titi = Student("titi", "F", school="EMN")
+
+print(toto)
+print(titi)
+#+end_src
+
+which results in:
+
+#+RESULTS: aclasses2
 : Name : jii, Age : 0, Sexe : M, School : None 
-: Name : jii, Age : 0, Sexe : F, School : EMN 
+: Name : jii, Age : 0, Sexe : FM, School : EMN 
 
-** Meta Programming
- - 
 
-#+name: meta
+** Meta Programming (1/2)
+
+#+name: meta1
 #+begin_src python
+<<classes1>>
+bob = Person("bob")
+alice = Person("alice")
 
-x = Person()
-y = Person()
+print("Person has a counter (%s) and a name (%s)" 
+       % (hasattr(Person, "counter"), hasattr(Person, "name")))
+print("Bob has a counter (%s) and a name (%s)" 
+       % (hasattr(bob, "counter"), hasattr(bob, "name")))
 
-# Objects and Class runtime inspection
-hasattr(Person, "counter")
-hasattr(Person, "name")
-hasattr(x, "counter")
-hasattr(x, "name")
-
-# Adding attributes at runtime
-setattr(x, "sexe", "M") # or : x.sexe = "M"
-
-print(x.sexe)
-# print(y.sexe) # this will trigger an AttributeError
-
-# Getting attributes
-getattr(x, "age") # or: x.age
-
-# Getting class information
-x.__class__
-
-# Overwriting methods at runtime
-print(toto.say_hello())
-
-Person.say_hello = lambda self: str(self.age)
-
-print(toto.say_hello())
+getattr(bob, "age") # or: bob.age
+setattr(bob, "foo", "M") # or : bob.foo = "M"
 
 #+end_src
 The result is :
-#+RESULTS: meta
+#+RESULTS: meta1
+: Person has a counter (True) and a name (False)
+: Bob has a counter (True) and a name (True)
+
+** Meta Programming (2/2)
+
+#+name: meta2
+#+begin_src python
+<<classes1>>
+bob = Person("bob")
+alice = Person("alice")
+
+# Getting class information
+print("bob's class: %s " % (bob.__class__))
+
+# Overwriting methods at runtime
+print(bob.say_hello())
+Person.say_hello = lambda self: "hacked say_hello(...)"
+print(bob.say_hello())
+
+#+end_src
+The result is :
+#+RESULTS: meta2
+: bob's class: <class '__main__.Person'> 
+: Hello I am : bob
+: hacked say_hello(...)
 
 * Errors
 :PROPERTIES:
 :header-args:  :results output :exports both :noweb strip-export
 :END:
+** Try/except
+- Use *try*, *except* and *finally* to handle codes that can fail.
+
+#+name: exception1
+#+begin_src python
+try:
+   1 / 0
+except Exception as e:
+   print(e)
+#+end_src
+
+The result is :
+#+RESULTS: exception1
+: integer division or modulo by zero
+: dooh
+
+
+** Try/except (advanced)
+
+- The *traceback* enables to have more details about the source of the exception.
+
+#+name: exception2
+#+begin_src python
+import sys, traceback
+
+try:
+   1 / 0
+except Exception as e:
+   traceback.print_exc(file=sys.stdout)
+#+end_src
+
+The result is :
+#+RESULTS: exception2
+: Traceback (most recent call last):
+:   File "<stdin>", line 4, in <module>
+: ZeroDivisionError: integer division or modulo by zero
+: ici?
+
 
 * Concurrency
 :PROPERTIES:
