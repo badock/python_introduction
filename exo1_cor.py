@@ -3,6 +3,7 @@
 # Q1: Define an integer variable called a with value 1
 
 # ... your answer
+a = 1
 
 # Checking
 assert (type(a) == int), "a is not an integer !"
@@ -18,6 +19,8 @@ print("Q1 : OK !")
 
 li = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # ... your answer
+l1 = li[:5]
+l2 = li[5:]
 
 # Checking  # this is a dirty one :P
 assert (str(l1) == "[0, 1, 2, 3, 4]"), "l1 is not well defined !"
@@ -31,6 +34,8 @@ print("Q2 : OK !")
 l3 = []
 
 # ... your answer
+for x in range(0, 5):
+    l3.append(x)
 
 # Checking
 assert (str(l3) == "[0, 1, 2, 3, 4]"), "l3 is not well defined !"
@@ -42,6 +47,10 @@ print("Q3 : OK !")
 l4 = []
 
 # ... your answer
+x = 0
+while x < 5:
+    l4.append(x)
+    x += 1
 
 # Checking
 assert (str(l4) == "[0, 1, 2, 3, 4]"), "l4 is not well defined !"
